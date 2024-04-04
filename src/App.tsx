@@ -16,6 +16,15 @@ function App() {
   useEffect(() => {
     var _paq = (window._paq = window._paq || []);
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push([
+      "setDomains",
+      [
+        "*.skvisli.github.io",
+        "*.matomo-site2-aa9e74583c58.herokuapp.com",
+        "*.skvisli.github.io/matomo-site1",
+      ],
+    ]);
+    _paq.push(["enableCrossDomainLinking"]);
     _paq.push(["trackPageView"]);
     _paq.push(["enableLinkTracking"]);
     (function () {
@@ -48,6 +57,9 @@ function App() {
         <input placeholder="Skriv inn noe her" required></input>
         <button type="submit">Send inn</button>
       </form>
+      <a href="https://skvisli.github.io/matomo-site1/">
+        Gå tilbake til side 1
+      </a>
     </div>
   );
 }
