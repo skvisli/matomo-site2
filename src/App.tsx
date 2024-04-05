@@ -15,6 +15,10 @@ declare global {
 function App() {
   useEffect(() => {
     var _paq = (window._paq = window._paq || []);
+
+    // Matomo tracker has already been set up
+    if (_paq.length) return;
+
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push([
       "setDomains",
@@ -42,12 +46,11 @@ function App() {
 
   function submitForm(e: FormEvent) {
     e.preventDefault();
-    console.log("submitted");
     window._paq.push([
       "trackEvent",
-      "Button Click",
-      "Click",
-      "Triggered by code",
+      "userInteraction",
+      "buttonClick",
+      "sendtInnSkjema",
     ]);
   }
 
