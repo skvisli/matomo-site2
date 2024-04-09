@@ -1,8 +1,25 @@
 .App {
   margin: auto;
-  padding-top: 100px;
+  padding-top: 3rem;
+  width: 40rem;
+}
+
+.actions {
   display: flex;
   flex-direction: column;
   width: 20rem;
-  gap: 8px;
+  gap: 1rem;
+  margin-top: 5rem;
+}
+
+.actions > button {
+  width: 5rem;
+}
+
+h1 {
+  margin-bottom: 5rem;
+}
+
+.spacer {
+  height: 10rem;
 }

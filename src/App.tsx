@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import "./App.css";
 
 interface MatomoTracker {
@@ -13,6 +13,8 @@ declare global {
 }
 
 function App() {
+  const [visitId, setVisitId] = useState("");
+
   useEffect(() => {
     var _paq = (window._paq = window._paq || []);
 
@@ -42,6 +44,15 @@ function App() {
       g.src = "https://cdn.matomo.cloud/skvisli.matomo.cloud/matomo.js";
       s.parentNode?.insertBefore(g, s);
     })();
+
+    // get the current visit id
+    _paq.push([
+      function (this: any) {
+        setVisitId(
+          this.getCrossDomainLinkingUrlParameter().replace("pk_vid=", "")
+        );
+      },
+    ]);
   }, []);
 
   function submitForm(e: FormEvent) {
@@ -56,12 +67,16 @@ function App() {
 
   return (
     <div className="App">
-      <form onSubmit={submitForm}>
-        <input placeholder="Skriv inn noe her" required></input>
+      <h1>Annet domene</h1>
+      <h2>Domenenavn: {window.location.origin}</h2>
+      <h2>Besøks ID: {visitId}</h2>
+      <form className="actions" onSubmit={submitForm}>
+        <input placeholder="Fyll ut skjema" required></input>
         <button type="submit">Send inn</button>
       </form>
+      <div className="spacer"></div>
       <a href="https://skvisli.github.io/matomo-site1/">
-        Gå tilbake til side 1
+        Gå tilbake til min side
       </a>
     </div>
   );
