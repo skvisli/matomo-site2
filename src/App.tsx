@@ -1,5 +1,6 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import "./App.css";
+import { createRoot } from "react-dom/client";
 
 interface MatomoTracker {
   push: (...args: any[]) => void;
@@ -8,13 +9,14 @@ interface MatomoTracker {
 // Initialize _mtm as a global variable with the correct type
 declare global {
   interface Window {
-    _paq: MatomoTracker[];
+    _paq?: MatomoTracker[];
   }
 }
 
 function App() {
   const [visitId, setVisitId] = useState("");
 
+  // Add Matomo tracker
   useEffect(() => {
     var _paq = (window._paq = window._paq || []);
 
@@ -55,26 +57,63 @@ function App() {
     ]);
   }, []);
 
+  // Add a shadow DOM
+  useEffect(() => {
+    const shadowHost = document.getElementById("shadow-host");
+
+    // check if a shadow DOM is already attached
+    if (shadowHost && !shadowHost?.shadowRoot) {
+      const shadowRoot = shadowHost.attachShadow({ mode: "open" });
+      const reactRoot = createRoot(shadowRoot);
+
+      const button = (
+        <button onClick={sendEventFromShadowDOM}>Send shadow DOM event</button>
+      );
+
+      reactRoot.render(button);
+    }
+
+    function sendEventFromShadowDOM() {
+      if (window._paq) {
+        window._paq.push([
+          "trackEvent",
+          "userInteraction",
+          "buttonClick",
+          "sendtFraShadowDom",
+        ]);
+      }
+    }
+  }, []);
+
   function submitForm(e: FormEvent) {
     e.preventDefault();
-    window._paq.push([
-      "trackEvent",
-      "userInteraction",
-      "buttonClick",
-      "sendtInnSkjema",
-    ]);
+    if (window._paq) {
+      window._paq.push([
+        "trackEvent",
+        "userInteraction",
+        "buttonClick",
+        "sendtInnSkjema",
+      ]);
+    }
   }
 
   return (
     <div className="App">
       <h1>Annet domene</h1>
-      <h2>Domenenavn: {window.location.origin}</h2>
-      <h2>Besøks ID: {visitId}</h2>
+      <p>
+        <strong>Domenenavn: </strong>
+        {window.location.origin}
+      </p>
+      <p>
+        <strong>Besøks ID:</strong>
+        {visitId}
+      </p>
       <form className="actions" onSubmit={submitForm}>
         <input placeholder="Fyll ut skjema" required></input>
         <button type="submit">Send inn</button>
       </form>
       <div className="spacer"></div>
+      <div id="shadow-host"></div>
       <a href="https://skvisli.github.io/matomo-site1/">
         Gå tilbake til min side
       </a>

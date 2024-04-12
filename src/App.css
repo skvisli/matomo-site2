@@ -1,6 +1,9 @@
 .App {
   margin: auto;
-  padding-top: 3rem;
+  border: 4px lightseagreen solid;
+  border-radius: 4px;
+  padding: 3rem;
+  margin-top: 3rem;
   width: 40rem;
 }
 
@@ -22,4 +25,8 @@ h1 {
 
 .spacer {
   height: 10rem;
+}
+
+#shadow-host {
+  margin-bottom: 1rem;
 }
